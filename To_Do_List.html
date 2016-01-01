@@ -32,6 +32,39 @@
         return dateStr;
     }
 
+    function SendAjaxRequest(date, listGroupName, listName)
+    {
+
+        var dateStr = RemoveGMTFromDate(date);
+        
+
+        var dateAsHeading = "<li id = "+listName+"  class=\"list-group-item\">"+dateStr+"</li>";
+
+        $(listGroupName).empty().append(dateAsHeading)
+
+        $month = date.getMonth() +1
+        dateToQueryTasks = date.getFullYear()+"-"+$month+"-"+date.getDate();
+            $.ajax({
+                type: "POST",
+                url: "data.php",
+                data: { 'taskDate': dateToQueryTasks, 'queryType':'select'},
+                cache: false,
+                success: function(data, status)
+                    {
+                        if (status =='success' && data != '')
+                        {
+                           
+                            $(listGroupName).append(data);
+                        }
+                        else
+                        {
+                            // alert("Data In Yest Empty: " + data + "\nStatus: " + status);
+                        }
+                    }
+                });
+
+    }
+
  
  	$(document).ready( function(){
 
@@ -50,93 +83,29 @@
 
         // Display dates of yesterday, today and tomorrow as the top row of three columns respectively
 
+        SendAjaxRequest(today, "#todayListGroup", "todayDateLi")
 
 
-        var todayDateAsHeading = "<li id = \"todayDateLi\" class=\"list-group-item\">"+todayDateStr+"</li>";
-
-        $("#todayListGroup").append(todayDateAsHeading)
-        $month = today.getMonth() +1
-        var dateToQueryTasks = today.getFullYear()+"-"+$month+"-"+today.getDate();
-            $.ajax({
-                type: "POST",
-                url: "data.php",
-                data: { 'taskDate': dateToQueryTasks, 'queryType':'select'},
-                cache: false,
-                success: function(data, status)
-                    {
-                        if (status =='success' && data != '')
-                        {
-                            $("#todayListGroup").append(data);
-                        }
-                        else
-                        {
-                            // alert("Data In Today Empty: " + data + "\nStatus: " + status);
-                        }
-                    }
-                });
 
 
         var yesterday = new Date()
         yesterday.setDate( yesterday.getDate() - 1 )
-        yesterdayDateStr = RemoveGMTFromDate(yesterday);
+       
+
+
+        SendAjaxRequest(yesterday, "#yestListGroup", "yestDateLi")
+        // yesterdayDateStr = RemoveGMTFromDate(yesterday);
         
 
-        var yestDateAsHeading = "<li id = \"yestDateLi\"  class=\"list-group-item\">"+yesterdayDateStr+"</li>";
-
-        $("#yestListGroup").append(yestDateAsHeading)
-
-        $month = yesterday.getMonth() +1
-        dateToQueryTasks = yesterday.getFullYear()+"-"+$month+"-"+yesterday.getDate();
-            $.ajax({
-                type: "POST",
-                url: "data.php",
-                data: { 'taskDate': dateToQueryTasks,  'queryType':'select'},
-                cache: false,
-                success: function(data, status)
-                    {
-                        if (status =='success' && data != '')
-                        {
-                           
-                            $("#yestListGroup").append(data);
-                        }
-                        else
-                        {
-                            // alert("Data In Yest Empty: " + data + "\nStatus: " + status);
-                        }
-                    }
-                });
 
         var tommorrow = new Date();
         tommorrow.setDate( tommorrow.getDate() + 1 );
-        tommorrowDateStr = RemoveGMTFromDate(tommorrow);
+
+        SendAjaxRequest(tommorrow, "#tommListGroup", "tommDateLi")
+        // tommorrowDateStr = RemoveGMTFromDate(tommorrow);
         
               
 
-        var tommDateAsHeading = "<li id = \"tommDateLi\" class=\"list-group-item\">"+tommorrowDateStr+"</li>"
-
-        $("#tommListGroup").append(tommDateAsHeading)
-        $month = tommorrow.getMonth() + 1
-         dateToQueryTasks = tommorrow.getFullYear()+"-"+$month+"-"+tommorrow.getDate();
-            $.ajax({
-                type: "POST",
-                url: "data.php",
-                data: { 'taskDate': dateToQueryTasks,  'queryType':'select'},
-                cache: false,
-                success: function(data, status)
-                    {
-                        if (status =='success' && data != '')
-                        {
-                           
-                            $("#tommListGroup").append(data);
-                        }
-                        else
-                        {
-                            // alert("Data In Yest Empty: " + data + "\nStatus: " + status);
-                        }
-                    }
-                });
-
-		
 
  		$("#addTaskBtn").click(function(){
 
@@ -187,107 +156,22 @@
 
 
             /*Updating Today Column*/
+            SendAjaxRequest(today, "#todayListGroup", "todayDateLi");
 
-            //Clear the child elements of the list
-            $("#todayListGroup").empty()
-
-
-            //Set the date again as a row in the list
-            var todayDateAsHeading = "<li id = \"todayDateLi\" class=\"list-group-item\">"+todayDateStr+"</li>";
-
-            $("#todayListGroup").append(todayDateAsHeading)
-
-
-            $month = today.getMonth() + 1
-            var dateToQueryTasks = today.getFullYear()+"-"+$month+"-"+today.getDate();
-            $.ajax({
-                type: "POST",
-                url: "data.php",
-                data: { 'taskDate': dateToQueryTasks, 'queryType':'select'},
-                cache: false,
-                success: function(data, status)
-                    {
-                        if (status =='success' && data != '')
-                        {
-                            $("#todayListGroup").append(data);
-                        }
-                        else
-                        {
-                            // alert("Data: " + data + "\nStatus: " + status);
-                        }
-                    }
-                });
+     
 
             /*Updating Yesterday Column*/
 
             yesterday.setDate( yesterday.getDate() - 1 )
-            yesterdayDateStr = RemoveGMTFromDate(yesterday);
-            
 
-            //Clear the child elements of the list
-            $("#yestListGroup").empty()
+            SendAjaxRequest(yesterday, "#yestListGroup", "yestDateLi");
 
-
-            //Set the date again as a row in the list
-            var yestDateAsHeading = "<li id = \"yestDateLi\" class=\"list-group-item\">"+yesterdayDateStr+"</li>";
-
-            $("#yestListGroup").append(yestDateAsHeading)
-
-            $month = yesterday.getMonth() + 1
-            dateToQueryTasks = yesterday.getFullYear()+"-"+$month+"-"+yesterday.getDate();
-            $.ajax({
-                type: "POST",
-                url: "data.php",
-                data: { 'taskDate': dateToQueryTasks, 'queryType':'select'},
-                cache: false,
-                success: function(data, status)
-                    {
-                        if (status =='success' && data != '')
-                        {
-                            $("#yestListGroup").append(data);
-                        }
-                        else
-                        {
-                           //  alert("Data: " + data + "\nStatus: " + status);
-                        }
-                    }
-                });
 
             /*Updating Tommorow Column*/
-            
             tommorrow.setDate( tommorrow.getDate() - 1 );
-            tommorrowDateStr =  RemoveGMTFromDate(tommorrow);
+
+            SendAjaxRequest(tommorrow, "#tommListGroup", "tommDateLi");
             
-    
-            //Clear the child elements of the list
-            $("#tommListGroup").empty()
-
-
-            //Set the date again as a row in the list
-            var tommDateAsHeading = "<li id = \"tommDateLi\" class=\"list-group-item\">"+tommorrowDateStr+"</li>";
-
-            $("#tommListGroup").append(tommDateAsHeading)
-
-
-            $month = tommorrow.getMonth() + 1
-            dateToQueryTasks = tommorrow.getFullYear()+"-"+$month+"-"+tommorrow.getDate();
-            $.ajax({
-                type: "POST",
-                url: "data.php",
-                data: { 'taskDate': dateToQueryTasks, 'queryType':'select'},
-                cache: false,
-                success: function(data, status)
-                    {
-                        if (status =='success' && data != '')
-                        {
-                            $("#tommListGroup").append(data);
-                        }
-                        else
-                        {
-                           //  alert("Data: " + data + "\nStatus: " + status);
-                        }
-                    }
-                });
 
 
 
@@ -307,111 +191,24 @@
 
             /*Updating Today Column*/
 
-            //Clear the child elements of the list
-            $("#todayListGroup").empty()
-
-
-            //Set the date again as a row in the list
-            var todayDateAsHeading = "<li id = \"todayDateLi\" class=\"list-group-item\">"+todayDateStr+"</li>";
-
-            $("#todayListGroup").append(todayDateAsHeading)
-
-
-            $month = today.getMonth() + 1
-            var dateToQueryTasks = today.getFullYear()+"-"+$month+"-"+today.getDate();
-            $.ajax({
-                type: "POST",
-                url: "data.php",
-                data: { 'taskDate': dateToQueryTasks, 'queryType':'select'},
-                cache: false,
-                success: function(data, status)
-                    {
-                        if (status =='success' && data != '')
-                        {
-                            $("#todayListGroup").append(data);
-                        }
-                        else
-                        {
-                            // alert("Data: " + data + "\nStatus: " + status);
-                        }
-                    }
-                });
-
+            SendAjaxRequest(today, "#todayListGroup", "todayDateLi");
+      
 
             /*Updating Yesterday Column*/
 
-            yesterday.setDate( yesterday.getDate() + 1 )
-            yesterdayDateStr = RemoveGMTFromDate(yesterday);
+            yesterday.setDate( yesterday.getDate() + 1 );
+
+            SendAjaxRequest(yesterday, "#yestListGroup", "yestDateLi");
 
 
-            //Clear the child elements of the list
-            $("#yestListGroup").empty()
-
-
-            //Set the date again as a row in the list
-            var yestDateAsHeading = "<li id = \"yestDateLi\" class=\"list-group-item\">"+yesterdayDateStr+"</li>";
-
-            $("#yestListGroup").append(yestDateAsHeading)
-
-
-            $month = yesterday.getMonth() + 1
-            dateToQueryTasks = yesterday.getFullYear()+"-"+$month+"-"+yesterday.getDate();
-            $.ajax({
-                type: "POST",
-                url: "data.php",
-                data: { 'taskDate': dateToQueryTasks, 'queryType':'select'},
-                cache: false,
-                success: function(data, status)
-                    {
-                        if (status =='success' && data != '')
-                        {
-                            $("#yestListGroup").append(data);
-                        }
-                        else
-                        {
-                            // alert("Data: " + data + "\nStatus: " + status);
-                        }
-                    }
-                });
 
             /*Updating Tomorrow Column*/
 
             tommorrow.setDate( tommorrow.getDate() + 1 );
-            tommorrowDateStr = RemoveGMTFromDate(tommorrow);
-            
 
-             //Clear the child elements of the list
-            $("#tommListGroup").empty()
+            SendAjaxRequest(tommorrow, "#tommListGroup", "tommDateLi");
 
 
-            //Set the date again as a row in the list
-            var tommDateAsHeading = "<li id = \"tommDateLi\" class=\"list-group-item\">"+tommorrowDateStr+"</li>";
-
-            $("#tommListGroup").append(tommDateAsHeading)
-
-
-            $month = tommorrow.getMonth() + 1
-            dateToQueryTasks = tommorrow.getFullYear()+"-"+$month+"-"+tommorrow.getDate();
-            $.ajax({
-                type: "POST",
-                url: "data.php",
-                data: { 'taskDate': dateToQueryTasks, 'queryType':'select'},
-                cache: false,
-                success: function(data, status)
-                    {
-                        if (status =='success' && data != '')
-                        {
-                            $("#tommListGroup").append(data);
-                        }
-                        else
-                        {
-                           //  alert("Data: " + data + "\nStatus: " + status);
-                        }
-                    }
-                });
-
-
-            
 
 
         })
