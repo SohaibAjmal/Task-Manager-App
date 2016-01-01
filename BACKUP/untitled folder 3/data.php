@@ -63,8 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
               
                 $sql = "INSERT INTO Tasks (TaskDateTime, TaskName, TaskType) VALUES ('$taskDate','$taskName', '$taskType')";
                 $conn->exec($sql);
-                echo $taskDate;
-               // echo "New Record Created Successfully"; 
+                echo "New Record Created Successfully"; 
             }
         catch(PDOException $e)
             {
@@ -76,7 +75,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 
 else if ($_SERVER["REQUEST_METHOD"] == "GET")
 {
+    // $dateToQueryTasks = $_GET['dateToQueryTasks'];
+    // //$listId = $_GET['listId'];
 
+    // try {
+    //         $conn = new PDO("mysql:host=$servername;dbname=TasksDB", $username, $password);
+    //         // set the PDO error mode to exception
+    //         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+          
+    //         $sql = "SELECT FROM Tasks (TaskDateTime, TaskName, TaskType) WHERE TaskDateTime = '$dateToQueryTasks'";
+    //         $result = $conn->query($sql);
+
+    //         var taskListString = "";
+    //         foreach ($result as $row) {
+
+    //             "<li class=\"list-group-item\">"+task+"</li>";
+    //             taskListString .= "<li class=\"list-group-item\">"+$row['TaskName']+"</li>";
+    //         }
+
+    //         echo taskListString;
+
+    //     }
+    // catch(PDOException $e)
+    //     {
+    //         echo "Connection failed: " . $e->getMessage();
+    //     }
 }
 
 ?>

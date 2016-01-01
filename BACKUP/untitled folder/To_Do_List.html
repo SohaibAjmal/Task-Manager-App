@@ -1,0 +1,218 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>To Do List</title>
+
+   
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    <style>
+
+        .col-centered{
+            float: none;
+            width: 60%;
+            margin: 0 auto;
+        }
+    </style>
+
+
+    <script>
+
+
+ 
+ 	$(document).ready( function(){
+
+ 		var today = new Date();  //  d.setDate( d.getDate() + 1 ) // tommorrow's date
+
+        //remove the GMT part from date
+        todayDateStr = String(today).split(' ').slice(0,4).join(' ');
+
+        // Display today's date at the top
+        $("#dateDisp").text(todayDateStr)
+
+
+        // Display dates of yesterday, today and tomorrow as the top row of three columns respectively
+
+
+
+        var todayDateAsHeading = "<li id = \"todayDateLi\" class=\"list-group-item\">"+todayDateStr+"</li>";
+
+        $("#todayListGroup").append(todayDateAsHeading)
+
+
+        var yesterday = new Date()
+        yesterday.setDate( yesterday.getDate() - 1 )
+        yesterdayDateStr = String(yesterday).split(' ').slice(0,4).join(' ');
+        
+
+        var yestDateAsHeading = "<li id = \"yestDateLi\"  class=\"list-group-item\">"+yesterdayDateStr+"</li>";
+
+        $("#yestListGroup").append(yestDateAsHeading)
+
+        var tommorrow = new Date();
+        tommorrow.setDate( tommorrow.getDate() + 1 );
+        tommorrowDateStr = String(tommorrow).split(' ').slice(0,4).join(' ');
+        
+              
+
+        var tommDateAsHeading = "<li id = \"tommDateLi\" class=\"list-group-item\">"+tommorrowDateStr+"</li>"
+
+        $("#tommListGroup").append(tommDateAsHeading)
+
+		
+
+ 		$("#addTaskBtn").click(function(){
+
+ 				var task = $("#inputTask").val()
+
+                if (task != "")
+                {
+
+                    var dateToAddInDB = "2015-"+today.getMonth()+"-"+today.getDate();
+                    // $.post("test_db.php",
+                    //     {
+                    //         taskDate : dateToAddInDB,
+                    //         taskName : task,
+                    //         taskType : "BungeeJumping"
+
+                    //     },
+                    //     function (data, status)
+                    //     {   alert("Data: " + data + "\nStatus: " + status); }
+                    //     )
+
+                    $.ajax({
+                        type: "POST",
+                        url: "test_db.php",
+                        data: { 'taskDate': dateToAddInDB, 'taskName':task,'taskType' : "None"},
+                        cache: false,
+                        success: function(data, success)
+                            {
+                                alert("Data: " + data + "\nStatus: " + status);
+                            }
+                        });
+
+                    /*Add the task as a list item*/
+     				var taskInList = "<li class=\"list-group-item\">"+task+"</li>"
+
+     				$("#todayListGroup").append(taskInList)
+                }
+ 			
+ 		})
+
+        $("#leftScroll").click(function(){
+
+
+           
+
+            //move the content/tasks to the right
+            var tommTaskList = $("#tommListGroup").html();
+            var todayTaskList = $("#todayListGroup").html();
+
+            $("#todayListGroup").html(tommTaskList);
+            $("#yestListGroup").html(todayTaskList);
+
+
+        })
+
+
+        $("#rightScroll").click(function(){
+
+
+        
+
+            // move the content/tasks to the right
+            var todayTaskList = $("#todayListGroup").html();
+
+            var yesterdayTaskList = $("#yestListGroup").html();
+
+
+            $("#tommListGroup").html(todayTaskList);
+
+            
+            $("#todayListGroup").html(yesterdayTaskList);
+
+
+        })
+ 		
+ 	})
+    
+ 
+    </script>
+</head>
+<body>
+ 
+
+    <div class = "row">
+        <div class = "col-md-12 col-centered">
+            <h2>Manage Tasks By Date</h2>  
+             <hr>
+        </div>
+    </div>
+    <br>
+
+    <div class = "row">
+        <div class="col-md-2 ">
+            <h4>Date to Add task</h4>
+        </div>
+    </div>
+
+    <div class = "row">
+
+        <div class="col-md-1">
+
+            <input id = "leftScroll" type = "image" src = "left-arrow.png"> </input>
+        </div>
+
+        <div class="col-md-1">
+            <h4 id = "dateDisp"> </h4>
+        </div>
+
+        <div class="col-md-1">
+            <input id = "rightScroll" type = "image" src = "right-arrow.png"></input>
+        </div>
+    </div>
+
+    <br>
+    <button id = "addTaskBtn"> Add Task</button>
+    <input id = "inputTask" ></input> 
+
+
+    <!-- Div to show tasks per date -->
+    <div class="row">
+    <div  id = "div1" class="col-md-4" style="background-color:lavender;">
+
+         <ul id = "yestListGroup" class="list-group">
+            
+        </ul>
+    	
+
+    </div>
+
+    <div id = "div2" class="col-md-4" style="background-color:lavenderblush;">
+
+        <ul id = "todayListGroup" class="list-group">
+            
+        </ul>
+
+    </div>
+
+    <div id = "div3" class="col-md-4" style="background-color:lavender;">
+
+
+         <ul id = "tommListGroup" class="list-group">
+            
+        </ul>
+
+    </div>
+   </div>
+
+
+</body>
+</html> 
