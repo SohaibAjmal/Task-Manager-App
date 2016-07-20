@@ -35,7 +35,6 @@
     {
 
         var dateStr = RemoveGMTFromDate(date);
-        
 
         var dateAsHeading = "<li id = "+listName+"  class=\"list-group-item\" >"+dateStr+"</li>";
 
@@ -67,7 +66,6 @@
  
  	$(document).ready( function(){
 
-
  		var today = new Date();  //  d.setDate( d.getDate() + 1 ) // tommorrow's date
 
         todayDateStr = RemoveGMTFromDate(today)
@@ -83,9 +81,7 @@
         yesterday.setDate( yesterday.getDate() - 1 )
 
         SendAjaxRequest(yesterday, "#yestListGroup", "yestDateLi")
-
-    
-
+        
         var tommorrow = new Date();
 
         tommorrow.setDate( tommorrow.getDate() + 1 );
@@ -100,8 +96,8 @@
                 {
 
                     $month = today.getMonth() +1
+                    
                     var dateToAddInDB = today.getFullYear()+"-"+$month+"-"+today.getDate();
-                 
 
                     $.ajax({
                         type: "POST",
@@ -148,7 +144,6 @@
 
             SendAjaxRequest(yesterday, "#yestListGroup", "yestDateLi");
 
-
             /*Updating Tommorow Column*/
             tommorrow.setDate( tommorrow.getDate() - 1 );
 
@@ -156,10 +151,8 @@
             
         })
 
-
         $("#rightScroll").click(function(){
-
-
+            
             today.setDate(today.getDate()+1)
             //remove the GMT part from date
             todayDateStr = RemoveGMTFromDate(today);
@@ -168,18 +161,15 @@
             $("#dateDisp").text(todayDateStr)
 
             /*Updating Today Column*/
-
             SendAjaxRequest(today, "#todayListGroup", "todayDateLi");
       
 
             /*Updating Yesterday Column*/
-
             yesterday.setDate( yesterday.getDate() + 1 );
 
             SendAjaxRequest(yesterday, "#yestListGroup", "yestDateLi");
 
             /*Updating Tomorrow Column*/
-
             tommorrow.setDate( tommorrow.getDate() + 1 );
 
             SendAjaxRequest(tommorrow, "#tommListGroup", "tommDateLi");
@@ -198,7 +188,6 @@
                         {   
                             var newTaskName = $(this).val(); 
                             
-
                             //Get the li element containing the taskedit input field
                             $listItem = $(this).parent();
 
@@ -396,7 +385,6 @@
     </div>
 
     <div id = "div3" class="col-md-4" style="background-color:lavender;">
-
 
          <ul id = "tommListGroup" class="list-group" >
             
