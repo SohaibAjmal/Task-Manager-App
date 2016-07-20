@@ -25,13 +25,11 @@
 
     <script>
 
-
     function RemoveGMTFromDate(date)
     {
         var dateStr = String(date).split(' ').slice(0,4).join(' ');
         return dateStr;
     }
-
 
     function SendAjaxRequest(date, listGroupName, listName)
     {
@@ -44,6 +42,7 @@
         $(listGroupName).empty().append(dateAsHeading)
 
         $month = date.getMonth() +1
+
         dateToQueryTasks = date.getFullYear()+"-"+$month+"-"+date.getDate();
             $.ajax({
                 type: "POST",
@@ -65,14 +64,8 @@
                 });
 
     }
-
-
  
  	$(document).ready( function(){
-
-
-
-
 
 
  		var today = new Date();  //  d.setDate( d.getDate() + 1 ) // tommorrow's date
@@ -82,13 +75,11 @@
         // Display today's date at the top
         $("#dateDisp").text(todayDateStr)
 
-
         // Display dates of yesterday, today and tomorrow as the top row of three columns respectively
         SendAjaxRequest(today, "#todayListGroup", "todayDateLi")
 
-
-
         var yesterday = new Date()
+
         yesterday.setDate( yesterday.getDate() - 1 )
 
         SendAjaxRequest(yesterday, "#yestListGroup", "yestDateLi")
@@ -96,12 +87,11 @@
     
 
         var tommorrow = new Date();
+
         tommorrow.setDate( tommorrow.getDate() + 1 );
 
         SendAjaxRequest(tommorrow, "#tommListGroup", "tommDateLi")
      
-        
-            
  		$("#addTaskBtn").click(function(){
 
  				var task = $("#inputTask").val()
@@ -125,7 +115,6 @@
                                     // alert("Data: " + data + "\nStatus: " + status);
                                 }
 
-                               //alert("Data: " + data + "\nStatus: " + status);
                             }
                         });
 
@@ -151,9 +140,7 @@
 
 
             /*Updating Today Column*/
-            SendAjaxRequest(today, "#todayListGroup", "todayDateLi");
-
-     
+            SendAjaxRequest(today, "#todayListGroup", "todayDateLi");     
 
             /*Updating Yesterday Column*/
 
@@ -167,10 +154,6 @@
 
             SendAjaxRequest(tommorrow, "#tommListGroup", "tommDateLi");
             
-
-
-
-
         })
 
 
@@ -195,16 +178,11 @@
 
             SendAjaxRequest(yesterday, "#yestListGroup", "yestDateLi");
 
-
-
             /*Updating Tomorrow Column*/
 
             tommorrow.setDate( tommorrow.getDate() + 1 );
 
             SendAjaxRequest(tommorrow, "#tommListGroup", "tommDateLi");
-
-
-
 
         })
 
@@ -250,10 +228,7 @@
                                         {
                                             if (status =='success')
                                             {
-                                               
                                                 $listItem.remove();  
-
-                                               // alert("Date is: " + data + " Status is "+status);
                                             }
                                             else
                                             {
@@ -265,8 +240,6 @@
                             }
                             else
                             {
-
-
                                 $.ajax({
                                     type: "POST",
                                     url: "data.php",
@@ -278,8 +251,6 @@
                                             {
                                                
                                                 $listItem.text(newTaskName); 
-
-                                               // alert("Date is: " + data + " Status is "+status);
                                             }
                                             else
                                             {
@@ -325,10 +296,7 @@
                                 {
                                     if (status =='success')
                                     {
-                                       
                                         $listItem.remove(); 
-
-                                       // alert("Date is: " + data + " Status is "+status);
                                     }
                                     else
                                     {
@@ -340,8 +308,6 @@
                     }
                     else
                     {
-
-
                         $.ajax({
                             type: "POST",
                             url: "data.php",
@@ -350,11 +316,8 @@
                             success: function(data, status)
                                 {
                                     if (status =='success')
-                                    {
-                                       
+                                    {  
                                         $listItem.text(newTaskName); 
-
-                                        //alert("Date is: " + data + " Status is "+status);
                                     }
                                     else
                                     {
@@ -365,12 +328,8 @@
                     }
 
                 }); 
+
     });
-
-    
-
-
-
 
        
  	})
@@ -426,7 +385,6 @@
             
         </ul>
     	
-
     </div>
 
     <div id = "div2" class="col-md-4" style="background-color:lavenderblush;">
